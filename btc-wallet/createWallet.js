@@ -2,10 +2,22 @@ const bip32 = require('bip32')
 const bip39 = require('bip39')
 const bitcoin = require('bitcoinjs-lib')
 
-//Set network
+const argNet = process.argv[2]?.toLowerCase()
+let networkName
+let network
+
+//Set network by arg. Default: testnet
 //bitcoin - mainnet
 //testnet - tesnet
-const network = bitcoin.networks.testnet
+switch (argNet) {
+    case 'mainnet':
+        network = bitcoin.networks.mainnet
+        networkName = 'mainnet'
+        break;
+    default:
+        network = bitcoin.networks.testnet
+        networkName = 'testnet'
+}
 
 //derivation of HD wallets
 const path = `m/49'/1'/0'/0`
@@ -26,7 +38,7 @@ let btcAddress = bitcoin.payments.p2pkh({
     network: network,
 }).address
 
-console.log("Wallet generated")
+console.log(`Wallet generated [${networkName}]`)
 console.log("Address: ", btcAddress)
 console.log("Private key:", node.toWIF())
 console.log("Seed:", mnemonic)
