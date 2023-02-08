@@ -5,22 +5,23 @@ const bitcoin = require('bitcoinjs-lib')
 const argNet = process.argv[2]?.toLowerCase()
 let networkName
 let network
+//derivation of HD wallets
+let path = `m/49'/1'/0'/0`
 
 //Set network by arg. Default: testnet
 //bitcoin - mainnet
 //testnet - tesnet
 switch (argNet) {
     case 'mainnet':
-        network = bitcoin.networks.mainnet
+        network = bitcoin.networks.bitcoin
         networkName = 'mainnet'
+        path = `m/49'/0'/0'/0`
         break;
     default:
         network = bitcoin.networks.testnet
         networkName = 'testnet'
+        path = `m/49'/1'/0'/0`
 }
-
-//derivation of HD wallets
-const path = `m/49'/1'/0'/0`
 
 //creating the mnemonic for the seed (passwords)
 let mnemonic = bip39.generateMnemonic()
